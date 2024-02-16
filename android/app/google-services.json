@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "535906956056",
+    "project_id": "reddict1",
+    "storage_bucket": "reddict1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:535906956056:android:5a200a1a3c2eff18c6646d",
+        "android_client_info": {
+          "package_name": "com.example.reddict1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "535906956056-ljtj3ng49gucninf77aeef7qk9kf0mql.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.reddict1",
+            "certificate_hash": "d9fec710e57ba158ea1d27b08eb1e0077f9ebb8c"
+          }
+        },
+        {
+          "client_id": "535906956056-0ups63glfbdhnillje4f702tdtjam59k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCT8KC3AjwiY98m5IHaTNvVmbrzV9_6YI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "535906956056-0ups63glfbdhnillje4f702tdtjam59k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "535906956056-hvt6mp548q7d5nua47pga4a3k1367gnd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.reddict1.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
