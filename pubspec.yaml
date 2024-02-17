@@ -41,6 +41,7 @@ dependencies:
   google_sign_in: ^6.2.1
   firebase_storage: ^11.6.5
   cloud_firestore: ^4.15.4
+  fpdart: ^1.1.0
   
 
 dev_dependencies:

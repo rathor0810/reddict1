@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:reddict1/core/constants/constants.dart';
 import 'package:reddict1/core/constants/firebase_constants.dart';
+import 'package:reddict1/core/failure.dart';
 import 'package:reddict1/core/provider/firebase_provider.dart';
+import 'package:reddict1/core/type_defs.dart';
 import 'package:reddict1/models/user_model.dart';
 
 final authRepositoryProvider = Provider((ref) => AuthRepository(
@@ -28,14 +31,14 @@ class AuthRepository {
   CollectionReference get _users =>
       _firestore.collection(FirebaseConstants.usersCollection);
 
-  void signInWithGoogle() async {
+  FutureEither<UserModel?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       final googleAuth = await googleUser?.authentication;
       final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
 
-      UserModel userModel;
+      late UserModel userModel;
 
       UserCredential userCredential =
           await _auth.signInWithCredential(credential);
@@ -49,11 +52,21 @@ class AuthRepository {
             isAuthenticated: true,
             karma: 0,
             awards: []);
-            await _users.doc(userModel.uid).set(userModel.toMap());
-      } 
-        
+        await _users.doc(userCredential.user!.uid).set(userModel.toMap());
+      } else {
+        userModel = await getUserData(userCredential.user!.uid).first;
+      }
+      return right(userModel);
+    } on FirebaseException catch (e) {
+      throw e.message!;
     } catch (e) {
-      print(e);
+      return left(failure(e.toString()));
+      // print(e);
     }
+  }
+
+  Stream<UserModel> getUserData(String uid) {
+    return _users.doc(uid).snapshots().map(
+        (event) => UserModel.fromMap(event.data() as Map<String, dynamic>));
   }
 }

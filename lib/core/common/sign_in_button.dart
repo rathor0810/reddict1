@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddict1/core/constants/constants.dart';
@@ -8,8 +10,8 @@ import 'package:reddict1/theme/pallete.dart';
 class SignInButton extends ConsumerWidget {
   const SignInButton({super.key});
 
-  void signInWithGoogle(WidgetRef ref) {
-    ref.read(authControllerProvider).signInWithGoogle();
+  void signInWithGoogle(BuildContext context, WidgetRef ref) {
+    ref.read(authControllerProvider).signInWithGoogle(context);
   }
 
   @override
@@ -17,7 +19,7 @@ class SignInButton extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(18.0),
       child: ElevatedButton.icon(
-        onPressed: () => signInWithGoogle(ref),
+        onPressed: () => signInWithGoogle(context, ref),
         icon: Image.asset(
           Constants.googlepath,
           width: 35,
