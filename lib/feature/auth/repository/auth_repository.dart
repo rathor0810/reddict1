@@ -38,7 +38,7 @@ class AuthRepository {
       final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
 
-      late UserModel userModel;
+       UserModel userModel;
 
       UserCredential userCredential =
           await _auth.signInWithCredential(credential);
