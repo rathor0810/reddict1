@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddict1/core/utils.dart';
@@ -6,8 +7,19 @@ import 'package:reddict1/models/user_model.dart';
 
 final userProvider = StateProvider<UserModel?>((ref) => null);
 
-final authControllerProvider = StateNotifierProvider<AuthController,bool>((ref) =>
-    AuthController(authRepository: ref.watch(authRepositoryProvider), ref: ref));
+final authControllerProvider = StateNotifierProvider<AuthController, bool>(
+    (ref) => AuthController(
+        authRepository: ref.watch(authRepositoryProvider), ref: ref));
+
+final authStateChangeProvider = StreamProvider((ref) {
+  final authController = ref.watch(authControllerProvider.notifier);
+  return authController.authStateChange;
+});
+final getUserDataProvider = StreamProvider.family((ref,String uid) {
+  final authController = ref.watch(authControllerProvider.notifier);
+  return authController.getUserData(uid);
+  
+});
 
 class AuthController extends StateNotifier<bool> {
   final AuthRepository _authRepository;
@@ -18,6 +30,10 @@ class AuthController extends StateNotifier<bool> {
         _ref = ref,
         super(false);
 
+  // Straming users  from auth repository and changing state if user is not same
+
+  Stream<User?> get authStateChange => _authRepository.authStateChange;
+
   void signInWithGoogle(BuildContext context) async {
     state = true;
     final user = await _authRepository.signInWithGoogle();
@@ -26,5 +42,10 @@ class AuthController extends StateNotifier<bool> {
         (l) => showSnackBar(context, l.message),
         (UserModel) =>
             _ref.read(userProvider.notifier).update((state) => UserModel));
+  }
+
+  // straming data from usermodel
+  Stream<UserModel> getUserData(String uid) {
+    return _authRepository.getUserData(uid);
   }
 }
